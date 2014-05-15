@@ -1,140 +1,147 @@
 Mauro Carvalho Chehab                                   2006 Apr 26
 
-V4L/DVB building procedures are based at the use of Makefile rules.
-Those rules are close to the ones at Linux Kernel, to allow an easier
-usage.
+V4L/DVB building procedures are based on the use of Makefile rules.
+These rules are similar to the ones used by the Linux Kernel to
+allow for an easier and more intuitive process.
 
 =======================================================================
 Quick building procedure is:
-	make all
-======================================================================
+    make all
+=======================================================================
 
-For those who may want more than just build all stuff there are some
-other interesting parameters to make:
+For those who may want something different than just building everything,
+there are some other interesting parameters you can pass to make:
 
-======================
 Normal building rules:
-all		- build all modules
+=====================
 
-clean		- Cleans compiled files from the tree,
-		  but keeping the latest
-		  used configuration and kernel version
+all               - Build all modules
 
-distclean	- Cleans compiled files from the tree,
-		  latest used configuration and kernel
-		  version.
+clean             - Clean compiled files from the tree, but
+                    keep the latest used configuration and
+                    kernel version
 
-default		- Continues building the latest module selection
-		  This is the behavior when just typed:
-			make
+distclean         - Clean compiled files from the tree alongside
+                    latest used configuration and kernel version.
 
-install		- Installs all modules at kernel's default dir
-		  for V4L/DVB. Requires root access.
+default           - Continue building the latest module selection.
+                    This is the behavior when just type: make
 
-rminstall	- cleans previous installations of V4L/DVB modules
+install           - Install all modules at kernel's default install
+                    dir for V4L/DVB. Requires root access.
 
-sound-install	- installs the sound modules related to V4L/DVB
-		  tree.
+rminstall         - Clean previously installed V4L/DVB modules
 
-======================
+sound-install     - Install the sound related V4L/DVB modules to
+                    the default install dir.
+
 Firmware rules:
+==============
 
-firmware	- Create the firmware files that are enclosed at the
-		  tree.
-		  Notice: Only a very few firmwares are currently here
+firmware          - Create the firmware files that are included with
+                    the tree.
+                    Notice: Only very few firmware files are currently
+                    being distributed.
 
-firmware_install- Install firmware files under /lib/firmware
+firmware_install  - Install firmware files under /lib/firmware
 
-=======================
 Module selection rules:
-(Those may require write access to kernel tree)
-
-allmodconfig	- Called by make all. Selects all modules that are known
-		  to compile against the kernel version used.
-
-stagingconfig	- Select all modules, plus all staging modules. The
-		  staging drivers are there because they may have
-		  bad userspace API's, serious bugs and/or not fill
-		  into Kernel required level of quality. So, be
-		  careful with those drivers.
-
-xconfig		- Generate a xconfig menu. Requires full
-		  kernel source, since it depends on kernel's
-		  qconf stript;
-
-gconfig		- Generate a qt menu. Requires full
-		  kernel source, since it depends on kernel's
-		  gconf stript;
-
-config		- Generate a text-mode menu. Requires full
-		  kernel source, since it depends on kernel's
-		  conf stript;
-
-menuconfig	- Generate a ncurses menu. Requires full
-		  kernel source, since it depends on kernel's
-		  mconf and lxconfig stripts;
-
-release		- Allows changing kernel version.
-		  Typical usage is:
-			make release VER=2.6.12-18mdk
-			(to force compiling to 2.6.12-18mdk)
-			(This will work only if
-			 /lib/modules/2.6.12-18mdk/build/
-			 points to that kernel version)
-		  Or
-			make release DIR=~/linux-git
-			(to force using kernel at a specific dir)
-		  To use current kernel version instead:
-			make release
-
 ======================
+
+Notice: These may require write access to the kernel tree.
+
+allmodconfig      - Called by make all. Selects all modules that are
+                    known to compile against the kernel version used.
+
+stagingconfig     - Select all modules, plus all staging modules. The
+                    staging drivers are there because they may have
+                    bad userspace API's, serious bugs and/or not comply
+                    with kernel required quality standards. Be careful
+                    with them.
+
+xconfig           - Generate a xconfig menu. Requires full
+                    kernel source, since it depends on kernel's
+                    qconf script.
+
+gconfig           - Generate a qt menu. Requires full kernel source,
+                    since it depends on the kernel's gconf script.
+
+config            - Generate a text-mode menu. Requires full kernel
+                    source cause it depends on the kernel's conf
+                    script.
+
+menuconfig        - Generate an ncurses menu. Requires full kernel source,
+                    cause it depends on the kernel's mconf and lxconfig
+                    scripts.
+
+release           - Allows selecting a particular kernel version for the
+                    build.
+
+                    Typical usage is:
+
+                    make release VER=2.6.12-18mdk
+                    (to force compiling to 2.6.12-18mdk)
+                    (This will work only if
+                    /lib/modules/2.6.12-18mdk/build/
+                    points to that kernel version)
+
+                    Or
+
+                    make release DIR=~/linux-git
+                    (to force using kernel at a specific dir)
+                    To use current kernel version instead:
+                    make release
+
 Module handling rules:
+=====================
+
 (require root access)
 
-insmod		- inserts all modules from V4L/DVB tree
+insmod            - Insert all modules from V4L/DVB tree
 
-rmmod		- removes all modules from V4L/DVB tree
+rmmod             - Remove all modules from V4L/DVB tree
 
-reload		- removes then reinserts all modules
+reload            - Remove then reinsert all modules
 
-===================
 Tree merging rules:
+==================
 
-ivtv		- enable merged ivtv build, using the latest ivtv sources
-		  from ivtvdriver.org (requires subversion)
+ivtv              - Enable merged ivtv build, using the latest ivtv
+                    sources from ivtvdriver.org (requires subversion)
 
-cx88-ivtv	- enable cx88-blackbird ivtv API emulation
+cx88-ivtv         - Enable cx88-blackbird ivtv API emulation
 
-ivtv-update	- update ivtv sources from ivtvdriver.org
+ivtv-update       - Update ivtv sources from ivtvdriver.org
 
-==========================================
 Patch preparation and tree handling rules:
+=========================================
+
 (used by developers)
 
-kernel-links	- Generate links to V4L/DVB at kernel tree.
-		  Requires write access to kernel tree.
+kernel-links      - Generate links to V4L/DVB at kernel tree.
+                    Requires write access to kernel tree.
 
-cardlist	- Updates Documentation/video4linux/CARDLIST.*
+cardlist          - Updates Documentation/video4linux/CARDLIST.*
 
-update		- updates the tree from master repository
+update            - Updates the tree from master repository
 
-commit		- commits the change, asking for a commit msg
+commit            - Commits the change, asking for a commit msg
 
-push		- sends outgoing stuff to master repository
+push              - Sends outgoing work to master repository
 
-checkemacs	- checks codingstyle and reports to emacs
-		  using "make checkemacs" at emacs compile menu,
-		  will report the lines with errors inside emacs.
+checkemacs        - Checks coding style and reports to emacs
+                    using "make checkemacs" at emacs compile menu,
+                    will report the lines with errors inside emacs.
 
-checkpatch	- checks codingstyle and reports using the same
-		  format as c. This way, c error parsers will
-		  handle it.
+checkpatch        - Checks coding style and reports using the same
+                    format as c. This way, c error parsers will
+                    handle it.
 
-checkterse	- checks codingstyle and reports using terse
-		  syntax, used on several compilaton tools.
+checkterse        - Checks coding style and reports using terse
+                    syntax, used on several compilation tools.
 
-mismatch	- checks for linker section mismatch. In other words,
-		  check if some driver has functions not properly
-		  declared with __init/__exit, and similar tags.
-		  It will also be more pedantic by dealing with
-		  compilation warnings as if they are errors.
+mismatch          - Checks for linker section mismatch. In other words,
+                    checks if some driver has functions not properly
+                    declared with __init/__exit, and similar tags.
+                    It will also be more pedantic by dealing with
+                    compilation warnings as if they were errors.
